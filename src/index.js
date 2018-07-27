@@ -116,6 +116,7 @@ export type ResizableProps = {
   onResize?: ResizeCallback,
   onResizeStop?: ResizeCallback,
   defaultSize?: Size,
+  mapSize?: //TODO
 };
 
 type State = {
@@ -393,6 +394,8 @@ export default class Resizable extends React.Component<ResizableProps, State> {
 
   onMouseMove(event: MouseEvent | TouchEvent) {
     if (!this.state.isResizing) return;
+
+
     const clientX = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
     const clientY = event instanceof MouseEvent ? event.clientY : event.touches[0].clientY;
     const { direction, original, width, height } = this.state;
@@ -499,6 +502,13 @@ export default class Resizable extends React.Component<ResizableProps, State> {
     }
     if (this.props.grid) {
       newHeight = snap(newHeight, this.props.grid[1]);
+    }
+
+
+    if (this.props.mapSize) {
+      const newSize = this.props.mapSize({ width: newWidth, height: newHeight });
+      newWidth = newSize.width;
+      newHeight = newSize.height;
     }
 
     const delta = {
