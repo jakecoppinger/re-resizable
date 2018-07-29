@@ -92,6 +92,11 @@ export type ResizeStartCallback = (
   elementRef: React.ElementRef<'div'>,
 ) => void;
 
+
+export type MapSizeCallback = (
+  size: NumberSize
+) => NumberSize;
+
 export type ResizableProps = {
   style?: Style,
   className?: string,
@@ -116,7 +121,7 @@ export type ResizableProps = {
   onResize?: ResizeCallback,
   onResizeStop?: ResizeCallback,
   defaultSize?: Size,
-  mapSize?: //TODO
+  mapSize?: MapSizeCallback
 };
 
 type State = {
@@ -169,6 +174,7 @@ const definedProps = [
   'onResize',
   'onResizeStop',
   'handleComponent',
+  'mapSize',
 ];
 
 const baseClassName = '__resizable_base__';
@@ -507,6 +513,7 @@ export default class Resizable extends React.Component<ResizableProps, State> {
 
     if (this.props.mapSize) {
       const newSize = this.props.mapSize({ width: newWidth, height: newHeight });
+      console.log('newsize:', newSize);
       newWidth = newSize.width;
       newHeight = newSize.height;
     }
